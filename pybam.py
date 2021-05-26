@@ -3,7 +3,7 @@ Awesome people who have directly contributed to the project:
 Jon Palmer - Bug finder & advice on project direction
 Mahmut Uludag - Bug finder
 
-Help:       print pybam.wat
+Help:       print(pybam.wat)
 Github:     http://github.com/JohnLonginotto/pybam
 
 This code was written by John Longinotto, a PhD student of the Pospisilik Lab at the Max Planck Institute of Immunbiology & Epigenetics, Freiburg.
@@ -84,19 +84,19 @@ Github:     http://github.com/JohnLonginotto/pybam
 
 [ Dynamic Parser Example ]
   for alignment in pybam.read('/my/data.bam'):
-      print alignment.sam_seq
+      print(alignment.sam_seq)
 
 [ Static Parser Example ]
   for seq,mapq in pybam.read('/my/data.bam',['sam_seq','sam_mapq']):
-       print seq
-       print mapq
+       print(seq)
+       print(mapq)
 
 [ Mixed Parser Example ]
   my_bam = pybam.read('/my/data.bam',['sam_seq','sam_mapq'])
-  print my_bam._static_parser_code
+  print(my_bam._static_parser_code)
   for seq,mapq in my_bam:
        if seq.startswith('ACGT') and mapq > 10:
-       print my_bam.sam
+       print(my_bam.sam)
 
 [ Custom Decompressor (from file path) Example ]
   my_bam = pybam.read('/my/data.bam.lzma',decompressor='lzma --decompress --stdout /my/data.bam.lzma')
@@ -114,19 +114,19 @@ class read:
     '''
     [ Dynamic Parser Example ]
     for alignment in pybam.read('/my/data.bam'):
-        print alignment.sam_seq
+        print(alignment.sam_seq)
 
     [ Static Parser Example ]
     for seq,mapq in pybam.read('/my/data.bam',['sam_seq','sam_mapq']):
-        print seq
-        print mapq
+        print(seq)
+        print(mapq)
 
     [ Mixed Parser Example ]
     my_bam = pybam.read('/my/data.bam',['sam_seq','sam_mapq'])
-    print my_bam._static_parser_code
+    print(my_bam._static_parser_code)
     for seq,mapq in my_bam:
         if seq.startswith('ACGT') and mapq > 10:
-            print my_bam.sam
+            print(my_bam.sam)
 
     [ Custom Decompressor (from file path) Example ]
     my_bam = pybam.read('/my/data.bam.lzma',decompressor='lzma --decompress --stdout /my/data.bam.lzma')
@@ -137,7 +137,7 @@ class read:
     [ Force Internal bgzip Decompressor ]
     my_bam = pybam.read('/my/data.bam',decompressor='internal')
 
-    "print pybam.wat" in the python terminal to see the possible parsable values,
+    "print(pybam.wat" in the python terminal to see the possible parsable values,)
     or visit http://github.com/JohnLonginotto/pybam for the latest info.
     '''
 
@@ -283,11 +283,11 @@ class read:
                             '''
                             expected_crc = crc_data[:4]
                             expected_size = unpack("<I", crc_data[4:])[0]
-                            if len(unzipped_data) != expected_size: print 'ERROR: Failed to unpack due to a Type 1 CRC error. Could the BAM be corrupted?'; exit()
+                            if len(unzipped_data) != expected_size: print('ERROR: Failed to unpack due to a Type 1 CRC error. Could the BAM be corrupted?'; exit())
                             crc = zlib.crc32(unzipped_data)
                             if crc < 0: crc = pack("<i", crc)
                             else:       crc = pack("<I", crc)
-                            if expected_crc != crc: print 'ERROR: Failed to unpack due to a Type 2 CRC error. Could the BAM be corrupted?'; exit()
+                            if expected_crc != crc: print('ERROR: Failed to unpack due to a Type 2 CRC error. Could the BAM be corrupted?'; exit())
                             '''
                         blocks_left_to_grab -= 1
                         if blocks_left_to_grab == 0:
@@ -300,7 +300,7 @@ class read:
                     raise StopIteration
 
             elif decompressor is not False and decompressor is not 'internal':
-                # It wouldn't be safe to just print to the shell four random bytes from the beginning of a file, so instead it's
+                # It wouldn't be safe to just print(to the shell four random bytes from the beginning of a file, so instead it's)
                 # written to a temp file and cat'd. The idea here being that we trust the decompressor string as it was written by 
                 # someone with access to python, so it has system access anyway. The file/data, however, should not be trusted.
                 magic_file = os.path.join(tempfile.mkdtemp(),'magic')
@@ -561,10 +561,10 @@ class read:
                 offset_end = offset+8+(unpack('<i',self.bam[offset+4:offset+8])[0]*py4py[self.bam[offset+3]])
                 tag_data = array(self.bam[offset+3] , self.bam[offset+8:offset_end] )
             else:
-                print 'PYBAM ERROR: I dont know how to parse BAM tags in this format: ',repr(tag_type)
-                print '             This is simply because I never saw this kind of tag during development.'
-                print '             If you could mail the following chunk of text to john at john.uk.com, i will fix this up for everyone :)'
-                print repr(tag_type),repr(self.bam[offset+3:end])
+                print('PYBAM ERROR: I dont know how to parse BAM tags in this format: ',repr(tag_type))
+                print('             This is simply because I never saw this kind of tag during development.')
+                print('             If you could mail the following chunk of text to john at john.uk.com, i will fix this up for everyone :)')
+                print(repr(tag_type),repr(self.bam[offset+3:end]))
                 exit()
             sam_tags_list.append((tag_name,tag_type,tag_data))
             offset = offset_end'''
@@ -586,7 +586,7 @@ class read:
                 'py4py':py4py,
                 'cigar_codes':cigar_codes
             }
-            exec code in exec_dict            # exec() compiles "code" to real code, creating the "parser" function and adding it to exec_dict['parser']
+            exec(code) in exec_dict            # exec() compiles "code" to real code, creating the "parser" function and adding it to exec_dict['parser']
             return exec_dict['parser']
 
         if fields:
@@ -684,10 +684,10 @@ class read:
                 offset_end = offset+8+(unpack('<i',self.bam[offset+4:offset+8])[0]*py4py[self.bam[offset+3]])
                 tag_data = array(self.bam[offset+3] , self.bam[offset+8:offset_end] )
             else:
-                print 'PYBAM ERROR: I dont know how to parse BAM tags in this format: ',repr(tag_type)
-                print '             This is simply because I never saw this kind of tag during development.'
-                print '             If you could mail the following chunk of text to john at john.uk.com, ill fix this up :)'
-                print repr(tag_type),repr(self.bam[offset+3:end])
+                print('PYBAM ERROR: I dont know how to parse BAM tags in this format: ',repr(tag_type))
+                print('             This is simply because I never saw this kind of tag during development.')
+                print('             If you could mail the following chunk of text to john at john.uk.com, ill fix this up :)')
+                print(repr(tag_type),repr(self.bam[offset+3:end]))
                 exit()
             result.append((tag_name,tag_type,tag_data))
             offset = offset_end
